@@ -1,7 +1,27 @@
 const telegramApi = require('node-telegram-bot-api')
 const TOKEN = '6365279526:AAFEi7m5sl5wc8D0eWj0u3IMQrym83e3xog'
 const bot = new telegramApi(TOKEN, { polling: true })
-const {luckyOption, restartLuckyOption} = require('/options.js')
+// const {luckyOption, restartLuckyOption} = require('/options.js')
+
+
+
+const luckyOption = {
+  reply_markup: JSON.stringify({
+    inline_keyboard: [
+      [{ text: '1', callback_data: '1' }, { text: '2', callback_data: '2' }, { text: '3', callback_data: '3' }],
+      [{ text: '4', callback_data: '4' }, { text: '5', callback_data: '5' }, { text: '6', callback_data: '6' }],
+      [{ text: '7', callback_data: '7' }, { text: '8', callback_data: '8' }, { text: '9', callback_data: '9' }],
+    ]
+  })
+}
+const restartLuckyOption = {
+  reply_markup: JSON.stringify({
+    inline_keyboard: [
+      [{ text: 'сыграть ещё раз', callback_data: '/restartLucky' }]
+    ]
+  })
+}
+
 
 const chats = {}
 
@@ -50,15 +70,15 @@ const start = () => {
     if (data === '/restartLucky') {
       return startGame(chatId)
     }
-    const user = await UserModel.findOne({ chatId })
+    // const user = await UserModel.findOne({ chatId })
     if (data == chats[chatId]) {
-      user.right += 1;
-      await bot.sendMessage(chatId, `Поздравляю!  ты отгадал цифру ${chats[chatId]}`, restartLuckyOption);
+      // user.right += 1;
+      return bot.sendMessage(chatId, `Поздравляю!  ты отгадал цифру ${chats[chatId]} С МЕНЯ ПИВАСИК ))`, restartLuckyOption);
     } else {
-      user.wrong += 1;
-      await bot.sendMessage(chatId, `Не угадал! я загадал цифру ${chats[chatId]}`, restartLuckyOption);
+      // user.wrong += 1;
+      return bot.sendMessage(chatId, `Не угадал! я загадал цифру ${chats[chatId]}`, restartLuckyOption);
     }
-    await user.save();
+    // await user.save();
   })
 
 }
